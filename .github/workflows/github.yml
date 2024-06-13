@@ -1,0 +1,55 @@
+# This is the name of the workflow as it will appear in the "Actions" tab of the GitHub repo
+name: Playwright with Cucumber BDD Test Automation Run
+
+# Specifies the trigger for this work flow
+# workflow_dispatch event allows you to manually trigger a workflow run through the GitHub Actions UI
+on:
+  workflow_dispatch
+
+# These are all the jobs in the workflow
+# A job is a set of steps in a workflow that is executed on the same runner
+jobs:
+  #This workflow contains a job called "build"
+  build:
+    # The type of runner the job will run on
+    runs-on: macos-latest
+    # Groups together all the steps that run in the build job
+    steps:
+      - name: Checkout main branch from GitHub
+        # uses keyword specifies that this step will run v2 of actions/checkout action
+        # this is an action that checkout your repository onto the runner
+        # allowing you to run scripts or other actions against your code
+        uses: actions/checkout@v2
+      - name: Setup JDK 21
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        # The run keyword tells the job to execute a command on the runner
+        run: mvn clean test
+      - name: Rename Extent report to index.html
+        run: mv target/cucumber-reports/extent.html target/cucumber-reports/index.html
+      - name: Archive Extent report Index HTML
+        # This line will run the action "upload-artifact" that uploads a file or directory as an
+        # artifact that can be accessed later in the workflow
+        uses: actions/upload-artifact@v3
+        # this section begins the list of input parameters for the upload-artifact action
+        with:
+          # this parameter specifies the name of the artifact
+          # it will be named extent-report-index
+          name: extent-report-index
+          # this parameter specifies the path to the file or directory you want to archive
+          # as the artifact. It points to the extent.htm file located in
+          # target/cucumber-reports directory of the project
+          # the artifact will be archived as extent-report-index artifact
+          path: target/cucumber-reports/index.html
+      # this is a step that deploys the extent report to github pages
+      - name: Deploy to Github Pages
+        # this line specifies the github actions that is used for this step. it uses this action to deploy
+        # the reports
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: ./target/cucumber-reports
