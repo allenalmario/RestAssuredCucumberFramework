@@ -1,5 +1,5 @@
 # This is the name of the workflow as it will appear in the "Actions" tab of the GitHub repo
-name: Playwright with Cucumber BDD Test Automation Run
+name: REST Assured with Cucumber BDD Test Automation Run
 
 # Specifies the trigger for this work flow
 # workflow_dispatch event allows you to manually trigger a workflow run through the GitHub Actions UI

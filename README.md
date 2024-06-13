@@ -20,7 +20,7 @@ with business stakeholders in the test automation process.
 
 ### GitHub Actions
 - Go to Actions
-- Click on the "Playwright with Cucumber BDD Test Automation Run"
+- Click on the "REST Assured with Cucumber BDD Test Automation Run"
 - Select Run workflow
 - Ensure branch is set to "main"
 - Click Run workflow
@@ -35,7 +35,7 @@ mvn clean test
 ## Where are reports saved
 
 ### GitHub Page
-https://allenalmario.github.io//
+https://allenalmario.github.io/RestAssuredCucumberFramework/
 
 ### Locally
 After tests are executed, an Extent Report with test results should be saved in the directory
